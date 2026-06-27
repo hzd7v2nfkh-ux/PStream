@@ -26,8 +26,7 @@ jobs:
             -destination "generic/platform=iOS" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            2>&1 | grep -v "simulator runtime" || true
+            CODE_SIGN_IDENTITY=""
 
       - name: Find app path
         run: find build/PStream.xcarchive -name "*.app" -type d
