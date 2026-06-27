@@ -1,4 +1,4 @@
-name:  PStream IPA
+name: Build PStream IPA
 
 on:
   push:
