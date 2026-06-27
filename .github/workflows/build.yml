@@ -27,14 +27,16 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            COMPILER_INDEX_STORE_ENABLE=NO \
-            EXCLUDED_ARCHS="" \
-            -allowProvisioningUpdates 2>&1 | grep -v "simulator runtime" || true
+            2>&1 | grep -v "simulator runtime" || true
+
+      - name: Find app path
+        run: find build/PStream.xcarchive -name "*.app" -type d
 
       - name: Package IPA
         run: |
+          APP_PATH=$(find build/PStream.xcarchive -name "*.app" -type d | head -1)
           mkdir -p build/Payload
-          cp -r build/PStream.xcarchive/Products/Applications/PStream.app build/Payload/
+          cp -r "$APP_PATH" build/Payload/
           cd build && zip -r PStream.ipa Payload/
 
       - name: Upload IPA
