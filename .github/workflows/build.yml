@@ -13,6 +13,10 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
+      - name: Resize icon
+        run: |
+          sips -z 1024 1024 PStream/Assets.xcassets/AppIcon.appiconset/icon.jpg
+
       - name: Build Archive
         run: |
           xcodebuild archive \
@@ -22,7 +26,11 @@ jobs:
             -destination "generic/platform=iOS" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" \
+            SKIP_INSTALL=NO \
+            BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+            ONLY_ACTIVE_ARCH=NO \
+            SUPPORTED_PLATFORMS=iphoneos
 
       - name: Upload Archive
         uses: actions/upload-artifact@v4
