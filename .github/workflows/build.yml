@@ -10,10 +10,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show all files
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Build Archive
         run: |
-          find . -name "*.xcodeproj" -type d
-          echo "---"
-          ls -la
-          echo "---"
-          ls -la PStream/ || echo "No PStream folder"
+          xcodebuild archive \
+            -project PStream.xcodeproj \
+            -scheme PStream \
+            -archivePath $PWD/build/PStream.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Upload Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: PStream-IPA
+          path: build/PStream.xcarchive
