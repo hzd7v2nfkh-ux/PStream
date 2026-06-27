@@ -27,13 +27,18 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            SKIP_INSTALL=NO \
-            BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            SUPPORTED_PLATFORMS=iphoneos
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            EXCLUDED_ARCHS="" \
+            -allowProvisioningUpdates 2>&1 | grep -v "simulator runtime" || true
 
-      - name: Upload Archive
+      - name: Package IPA
+        run: |
+          mkdir -p build/Payload
+          cp -r build/PStream.xcarchive/Products/Applications/PStream.app build/Payload/
+          cd build && zip -r PStream.ipa Payload/
+
+      - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: PStream-IPA
-          path: build/PStream.xcarchive
+          path: build/PStream.ipa
