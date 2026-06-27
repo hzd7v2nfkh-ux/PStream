@@ -6,12 +6,12 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
 
       - name: Resize icon
         run: |
@@ -27,9 +27,6 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
-
-      - name: Find app path
-        run: find build/PStream.xcarchive -name "*.app" -type d
 
       - name: Package IPA
         run: |
